@@ -128,6 +128,7 @@ limitations under the License.
         <module>gremlin-annotations</module>
         <module>gremlin-test</module>
         <module>gremlin-groovy</module>
+        <module>singlestore-gremlin</module>
         <module>tinkergraph-gremlin</module>
         <module>gremlin-javascript</module>
         <module>gremlin-python</module>
@@ -442,116 +443,6 @@ limitations under the License.
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <version>0.13</version>
-                <executions>
-                    <execution>
-                        <id>rat-checks</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludeSubProjects>false</excludeSubProjects>
-                    <excludes>
-                        <exclude>.mailmap</exclude>
-                        <exclude>.asf.yaml</exclude>
-                        <exclude>.travis.yml</exclude>
-                        <exclude>.travis.*.sh</exclude>
-                        <exclude>.dockerignore</exclude>
-                        <exclude>.github/**</exclude>
-                        <exclude>**/.classpath</exclude>
-                        <exclude>**/.project</exclude>
-                        <exclude>**/.settings/**</exclude>
-                        <exclude>**/.idea/**</exclude>
-                        <exclude>.repository/**</exclude>
-                        <exclude>**/target/**</exclude>
-                        <exclude>data/*.txt</exclude>
-                        <exclude>**/bin/gremlin.sh</exclude>
-                        <exclude>docs/static/**</exclude>
-                        <exclude>docs/original/**</exclude>
-                        <exclude>docs/site/home/css/**</exclude>
-                        <exclude>docs/site/home/js/**</exclude>
-                        <exclude>docs/gremlint/build/**</exclude>
-                        <exclude>docs/gremlint/public/CNAME</exclude>
-                        <exclude>gremlin-console/bin/gremlin.sh</exclude>
-                        <exclude>**/*.kryo</exclude>
-                        <exclude>**/*.gbin</exclude>
-                        <exclude>**/*.iml</exclude>
-                        <exclude>**/*.json</exclude>
-                        <exclude>**/*.xml</exclude>
-                        <exclude>**/*.ldjson</exclude>
-                        <exclude>**/*.graffle</exclude>
-                        <exclude>**/*.svg</exclude>
-                        <exclude>**/goal.txt</exclude>
-                        <exclude>**/src/main/resources/META-INF/services/**</exclude>
-                        <exclude>**/src/test/resources/mockito-extensions/**</exclude>
-                        <exclude>**/src/test/resources/META-INF/services/**</exclude>
-                        <exclude>**/src/test/resources/cucumber.properties</exclude>
-                        <exclude>**/src/test/resources/incorrect-traversals.txt</exclude>
-                        <exclude>**/src/test/resources/org/apache/tinkerpop/gremlin/console/groovy/plugin/script-customizer-*.groovy</exclude>
-                        <exclude>**/src/test/resources/org/apache/tinkerpop/gremlin/jsr223/script-customizer-*.groovy</exclude>
-                        <exclude>**/src/test/resources/org/apache/tinkerpop/gremlin/console/jsr223/script-customizer-*.groovy</exclude>
-                        <exclude>**/src/main/resources/org/apache/tinkerpop/gremlin/structure/io/script/*.txt</exclude>
-                        <exclude>**/src/main/ext/**</exclude>
-                        <exclude>**/src/main/static/**</exclude>
-                        <exclude>**/_bsp/**</exclude>
-                        <exclude>DEPENDENCIES</exclude>
-                        <exclude>**/.glv</exclude>
-                        <exclude>**/Debug/**</exclude>
-                        <exclude>**/Release/**</exclude>
-                        <exclude>**/obj/**</exclude>
-                        <exclude>**/*.sln</exclude>
-                        <exclude>**/*.user</exclude>
-                        <exclude>**/*.csproj</exclude>
-                        <exclude>**/.vs/**</exclude>
-                        <exclude>**/NuGet.Config</exclude>
-                        <exclude>**/*.nuspec</exclude>
-                        <exclude>**/BenchmarkDotNet.Artifacts/**</exclude>
-                        <exclude>**/.nvmrc</exclude>
-                        <exclude>**/.yarnrc.yml</exclude>
-                        <exclude>**/yarn.lock</exclude>
-                        <exclude>**/node/**</exclude>
-                        <exclude>**/node_modules/**</exclude>
-                        <exclude>**/npm-debug.log</exclude>
-                        <exclude>**/build/**</exclude>
-                        <!-- javascript docs/lib -->
-                        <exclude>**/doc/**</exclude>
-                        <exclude>**/lib/**</exclude>
-                        <exclude>**/.env</exclude>
-                        <exclude>**/.prettierrc</exclude>
-                        <exclude>**/_site/**</exclude>
-                        <exclude>**/.pytest_cache/**</exclude>
-                        <exclude>**/venv/**</exclude>
-                        <exclude>**/.eggs/**</exclude>
-                        <exclude>**/gremlinpython.egg-info/**</exclude>
-                        <exclude>**/docfx/**</exclude>
-                        <exclude>**/go.sum</exclude>
-                        <exclude>**/coverage.out</exclude>
-                        <exclude>**/gremlinconsoletest.egg-info/**</exclude>
-                    </excludes>
-                    <licenses>
-                        <license implementation="org.apache.rat.analysis.license.ApacheSoftwareLicense20"/>
-                    </licenses>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.doxia</groupId>
-                        <artifactId>doxia-core</artifactId>
-                        <version>1.6</version>
-                        <exclusions>
-                            <exclusion>
-                                <groupId>xerces</groupId>
-                                <artifactId>xercesImpl</artifactId>
-                            </exclusion>
-                        </exclusions>
-                    </dependency>
-                </dependencies>
             </plugin>
             <!-- we never use this plugin - disabling helps with speeding up other processing like when using -Dcoverage -->
             <plugin>
@@ -1412,7 +1303,7 @@ limitations under the License.
                                     <overview>${basedir}/docs/javadoc/overview.html</overview>
                                     <quiet>true</quiet>
                                     <sourcepath>
-                                        gremlin-annotations/src/main/java:gremlin-language/target/generated-sources/antlr4:gremlin-core/src/main/java:gremlin-driver/src/main/java:gremlin-groovy/src/main/java:gremlin-groovy/target/generated-sources/annotations:gremlin-groovy/target/generated-sources/groovy-stubs/main:gremlin-server/src/main/java:gremlin-test/src/main/java:tinkergraph-gremlin/src/main/java:gremlin-util/src/main/java
+                                        gremlin-annotations/src/main/java:gremlin-language/target/generated-sources/antlr4:gremlin-core/src/main/java:gremlin-driver/src/main/java:gremlin-groovy/src/main/java:gremlin-groovy/target/generated-sources/annotations:gremlin-groovy/target/generated-sources/groovy-stubs/main:gremlin-server/src/main/java:gremlin-test/src/main/java:tinkergraph-gremlin/src/main/java:gremlin-util/src/main/java:singlestore-gremlin/src/main/java
                                     </sourcepath>
                                     <dependencySourceIncludes>
                                         <dependencySourceInclude>org.apache.tinkerpop:*</dependencySourceInclude>

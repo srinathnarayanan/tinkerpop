@@ -16,28 +16,34 @@
 # under the License.
 
 host: localhost
-port: 45940
+port: 8182
 evaluationTimeout: 30000
 channelizer: org.apache.tinkerpop.gremlin.server.channel.HttpChannelizer
+graphs: {
+  graph: conf/singlestore.properties}
 scriptEngines: {
+  gremlin-lang: {},
   gremlin-groovy: {
     plugins: { org.apache.tinkerpop.gremlin.server.jsr223.GremlinServerGremlinPlugin: {},
-               org.apache.tinkerpop.gremlin.tinkergraph.jsr223.TinkerGraphGremlinPlugin: {},
                com.singlestore.gremlin.SingleStoreGremlinPlugin: {},
                org.apache.tinkerpop.gremlin.jsr223.ImportGremlinPlugin: {classImports: [java.lang.Math], methodImports: [java.lang.Math#*]},
-               org.apache.tinkerpop.gremlin.jsr223.ScriptFileGremlinPlugin: {}}}}
+               org.apache.tinkerpop.gremlin.jsr223.ScriptFileGremlinPlugin: {files: [scripts/empty-sample.groovy]}}}}
 serializers:
-  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphBinaryMessageSerializerV4}                                                              # application/vnd.graphbinary-v4.0
+  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphSONMessageSerializerV4, config: { ioRegistries: [org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3] }}            # application/json
+  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphBinaryMessageSerializerV4 }                                                                                                           # application/vnd.graphbinary-v1.0
+  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphBinaryMessageSerializerV4, config: { serializeResultToString: true }}                                                                 # application/vnd.graphbinary-v1.0-stringd
 metrics: {
   consoleReporter: {enabled: true, interval: 180000},
   csvReporter: {enabled: true, interval: 180000, fileName: /tmp/gremlin-server-metrics.csv},
   jmxReporter: {enabled: true},
   slf4jReporter: {enabled: true, interval: 180000}}
 strictTransactionManagement: false
+idleConnectionTimeout: 0
+keepAliveInterval: 0
 maxInitialLineLength: 4096
 maxHeaderSize: 8192
 maxChunkSize: 8192
-maxRequestContentLength: 65536
+maxRequestContentLength: 10485760
 maxAccumulationBufferComponents: 1024
 resultIterationBatchSize: 64
 writeBufferLowWaterMark: 32768

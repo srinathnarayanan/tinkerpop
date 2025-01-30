@@ -1,3 +1,4 @@
 org.apache.tinkerpop.gremlin.console.jsr223.RemoteGremlinPlugin
 org.apache.tinkerpop.gremlin.console.jsr223.UtilitiesGremlinPlugin
 org.apache.tinkerpop.gremlin.tinkergraph.jsr223.TinkerGraphGremlinPlugin
+com.singlestore.gremlin.SingleStoreGremlinPlugin
