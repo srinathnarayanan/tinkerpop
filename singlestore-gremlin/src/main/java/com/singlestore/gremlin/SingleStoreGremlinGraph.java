@@ -33,10 +33,9 @@ import org.slf4j.LoggerFactory;
 public class SingleStoreGremlinGraph implements Graph {
 
     private static final Logger logger = LoggerFactory.getLogger(SingleStoreGremlinGraph.class);
-    private final Configuration configuration;
+    public Configuration config;
 
     public SingleStoreGremlinGraph() {
-        configuration = null;
         logger.info("SingleStoreGremlinGraph initialized.");
     }
 
@@ -45,8 +44,8 @@ public class SingleStoreGremlinGraph implements Graph {
     }
 
     private SingleStoreGremlinGraph(Configuration conf) {
-        this.configuration = conf;
         System.out.println("SingleStoreGremlinGraph initialized with configuration: " + conf);
+        this.config = conf;
     }
 
     @Override

@@ -18,10 +18,12 @@
  */
 package com.singlestore.gremlin;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,20 +31,36 @@ import org.slf4j.LoggerFactory;
 public class SingleStoreGremlinTraversalSource extends GraphTraversalSource {
 
     private static final Logger logger = LoggerFactory.getLogger(SingleStoreGremlinTraversalSource.class);
+    public static Connection connection;
 
-    public SingleStoreGremlinTraversalSource(Graph graph) {
+    public SingleStoreGremlinTraversalSource(SingleStoreGremlinGraph graph) {
         super(graph);
+        if (connection != null) {
+            return;
+        }
+        try {
+            String url = graph.config.getString("jdbc.custom.url");
+            String user = graph.config.getString("jdbc.custom.user");
+            String password = graph.config.getString("jdbc.custom.password");
+            String driver = graph.config.getString("jdbc.custom.driver");
+
+            connection = DriverManager.getConnection(url, user, password);
+            Class.forName(driver);
+            System.out.println("Connected to SingleStore via JDBC!");
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException("Failed to connect to SingleStore", e);
+        }
     }
 
     @Override
-    public GraphTraversal<Vertex, Vertex> V(Object... vertexIds) {
-        logger.info("Received Gremlin Query: g.V({})", vertexIds);
-        return super.V(vertexIds);
+    public SingleStoreGraphTraversal<Vertex, Vertex> V(Object... vertexIds) {
+        logger.info("calling vertices()");
+        return new SingleStoreGraphTraversal<>("vertices", vertexIds);
     }
 
     @Override
-    public GraphTraversal<Edge, Edge> E(Object... edgeIds) {
-        logger.info("Received Gremlin Query: g.E({})", edgeIds);
-        return super.E(edgeIds);
+    public SingleStoreGraphTraversal<Edge, Edge> E(Object... edgeIds) {
+        logger.info("calling edges()");
+        return new SingleStoreGraphTraversal<>("edges", edgeIds);
     }
 }

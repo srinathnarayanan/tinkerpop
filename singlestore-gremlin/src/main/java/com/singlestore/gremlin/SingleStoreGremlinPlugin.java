@@ -32,7 +32,8 @@ public class SingleStoreGremlinPlugin extends AbstractGremlinPlugin {
 
     private static final DefaultImportCustomizer imports = DefaultImportCustomizer.build()
             .addClassImports(SingleStoreGremlinGraph.class,
-                    SingleStoreGremlinTraversalSource.class).create();
+                    SingleStoreGremlinTraversalSource.class,
+                    SingleStoreGraphTraversal.class).create();
 
     public SingleStoreGremlinPlugin() {
         super(NAME, imports);
